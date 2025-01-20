@@ -1,12 +1,11 @@
 "use client";
 
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import Breadcrumbs, { breadcrumbsClasses } from "@mui/material/Breadcrumbs";
-import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
-import { usePathname } from "next/navigation";
 import { toTitleCase } from "@/lib/utils";
+import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
+import { Typography } from "@mui/material";
+import Breadcrumbs, { breadcrumbsClasses } from "@mui/material/Breadcrumbs";
+import { styled } from "@mui/material/styles";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 
 const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   margin: theme.spacing(1, 0),
@@ -19,8 +18,12 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   },
 }));
 
-export default function NavbarBreadcrumbs() {
+export default function NavbarBreadcrumbs({}: {}) {
   const pathname = usePathname();
+
+  const queryParams = useSearchParams();
+
+  const name = queryParams.get("name");
 
   const breadcrumbs = pathname.split("/");
 
@@ -29,9 +32,9 @@ export default function NavbarBreadcrumbs() {
       aria-label="breadcrumb"
       separator={<NavigateNextRoundedIcon fontSize="small" />}
     >
-      {breadcrumbs.map((breadcrumb, index, breadcrumbs) => (
+      {breadcrumbs.map((bc, index) => (
         <Typography
-          key={breadcrumb + index}
+          key={bc + index}
           variant="body1"
           sx={
             index + 1 === breadcrumbs.length
@@ -39,7 +42,9 @@ export default function NavbarBreadcrumbs() {
               : undefined
           }
         >
-          {toTitleCase(breadcrumb)}
+          {toTitleCase(
+            index + 1 === breadcrumbs.length && name ? (name as string) : bc
+          )}
         </Typography>
       ))}
     </StyledBreadcrumbs>

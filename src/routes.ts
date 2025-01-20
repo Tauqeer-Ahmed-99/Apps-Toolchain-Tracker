@@ -1,5 +1,6 @@
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
+import AppsRoundedIcon from "@mui/icons-material/AppsRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
@@ -7,6 +8,8 @@ import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 export enum Routes {
   Auth = "/auth",
   Dashboard = "/dashboard",
+  Applications = "/apps",
+  ApplicationDetails = "/apps/app/:appId",
   Settings = "/settings",
   About = "/about",
   Feedback = "/feedback",
@@ -35,6 +38,21 @@ const routes: Route[] = [
     isProtected: true,
     showNavbar: true,
     icon: DashboardRoundedIcon,
+  },
+  {
+    label: "Applications",
+    path: Routes.Applications,
+    isNavItem: true,
+    isProtected: true,
+    showNavbar: true,
+    icon: AppsRoundedIcon,
+  },
+  {
+    label: "Application Details",
+    path: Routes.ApplicationDetails,
+    isProtected: true,
+    showNavbar: true,
+    icon: AppsRoundedIcon,
   },
   {
     label: "Settings",

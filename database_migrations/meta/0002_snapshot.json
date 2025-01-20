@@ -1,0 +1,235 @@
+{
+  "id": "b6597c94-7ed3-46d8-83fc-615c45e26d1f",
+  "prevId": "7abc89c6-fdd7-47d3-9783-f8b0d1da5424",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "Application_Toolchain_Tracker_Schema.Applications": {
+      "name": "Applications",
+      "schema": "Application_Toolchain_Tracker_Schema",
+      "columns": {
+        "appId": {
+          "name": "appId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "appName": {
+          "name": "appName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "appDescription": {
+          "name": "appDescription",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "appType": {
+          "name": "appType",
+          "type": "AppType",
+          "typeSchema": "Application_Toolchain_Tracker_Schema",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdOn": {
+          "name": "createdOn",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedOn": {
+          "name": "updatedOn",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "Application_Toolchain_Tracker_Schema.Costs": {
+      "name": "Costs",
+      "schema": "Application_Toolchain_Tracker_Schema",
+      "columns": {
+        "costId": {
+          "name": "costId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "costCycle": {
+          "name": "costCycle",
+          "type": "CostCycle",
+          "typeSchema": "Application_Toolchain_Tracker_Schema",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cost": {
+          "name": "cost",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "serviceId": {
+          "name": "serviceId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdOn": {
+          "name": "createdOn",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedOn": {
+          "name": "updatedOn",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Costs_serviceId_Services_serviceId_fk": {
+          "name": "Costs_serviceId_Services_serviceId_fk",
+          "tableFrom": "Costs",
+          "tableTo": "Services",
+          "schemaTo": "Application_Toolchain_Tracker_Schema",
+          "columnsFrom": [
+            "serviceId"
+          ],
+          "columnsTo": [
+            "serviceId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "Application_Toolchain_Tracker_Schema.Services": {
+      "name": "Services",
+      "schema": "Application_Toolchain_Tracker_Schema",
+      "columns": {
+        "serviceId": {
+          "name": "serviceId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "serviceName": {
+          "name": "serviceName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "serviceDescription": {
+          "name": "serviceDescription",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "appId": {
+          "name": "appId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdOn": {
+          "name": "createdOn",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedOn": {
+          "name": "updatedOn",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Services_appId_Applications_appId_fk": {
+          "name": "Services_appId_Applications_appId_fk",
+          "tableFrom": "Services",
+          "tableTo": "Applications",
+          "schemaTo": "Application_Toolchain_Tracker_Schema",
+          "columnsFrom": [
+            "appId"
+          ],
+          "columnsTo": [
+            "appId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "Application_Toolchain_Tracker_Schema.AppType": {
+      "name": "AppType",
+      "schema": "Application_Toolchain_Tracker_Schema",
+      "values": [
+        "Web",
+        "Mobile",
+        "Desktop",
+        "Hybrid"
+      ]
+    },
+    "Application_Toolchain_Tracker_Schema.CostCycle": {
+      "name": "CostCycle",
+      "schema": "Application_Toolchain_Tracker_Schema",
+      "values": [
+        "Weekly",
+        "Monthly",
+        "Annual"
+      ]
+    }
+  },
+  "schemas": {
+    "Application_Toolchain_Tracker_Schema": "Application_Toolchain_Tracker_Schema"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

@@ -1,0 +1,2 @@
+CREATE TYPE "Application_Toolchain_Tracker_Schema"."AppType" AS ENUM('Web', 'Mobile', 'Desktop', 'Hybrid');--> statement-breakpoint
+ALTER TABLE "Application_Toolchain_Tracker_Schema"."Applications" ADD COLUMN "appType" "Application_Toolchain_Tracker_Schema"."AppType" NOT NULL;
