@@ -26,6 +26,8 @@ import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
 import Options from "./Options";
 import DeleteServiceButton from "./DeleteServiceButton";
+import { getServiceIcon } from "@/lib/utils";
+import Image from "next/image";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -81,7 +83,13 @@ const AddService = ({ service }: { service?: Service }) => {
       {service ? (
         <MenuItem sx={{ py: 2 }} onClick={openDialog}>
           <ListItemAvatar>
-            <ListItemAvatar></ListItemAvatar>
+            <ListItemAvatar>
+              <Image
+                src={getServiceIcon(service.serviceName).icon}
+                alt={service.serviceName}
+                height={30}
+              />
+            </ListItemAvatar>
           </ListItemAvatar>
           <ListItemText
             primary={service.serviceName}

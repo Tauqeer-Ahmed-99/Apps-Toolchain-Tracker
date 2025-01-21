@@ -1,13 +1,13 @@
 import React, { Suspense } from "react";
-import Stack from "@mui/material/Stack";
 import ApplicationList from "@/components/ApplicationList";
 import AppsHeader from "@/components/AppsHeader";
+import ApplicationLoading from "@/components/ApplicationLoading";
 
 const ApplicationsScreen = async () => {
   return (
     <>
       <AppsHeader />
-      <Suspense>
+      <Suspense fallback={<ApplicationLoading />}>
         <ApplicationList />
       </Suspense>
     </>

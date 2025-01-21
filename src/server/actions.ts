@@ -196,8 +196,6 @@ export const createUpdateService = async (
       serviceDescription: formData.get("serviceDescription")?.toString(),
     };
 
-    console.log(appDetails);
-
     const validatedFields = AddServiceFormSchema.safeParse(appDetails);
 
     if (!validatedFields.success) {

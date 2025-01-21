@@ -3,11 +3,17 @@ import "server-only";
 import { Application } from "@/lib/models";
 import database from "..";
 
-export const getUserApps = async (userId: string): Promise<Application[]> => {
+export const getUserApps = async (
+  userId: string,
+  allData?: boolean
+): Promise<Application[]> => {
   try {
     const userApps = await database.query.Applications.findMany({
       where: (fields, { eq }) => eq(fields.userId, userId),
-      with: { services: true },
+      orderBy: (fields, { asc }) => asc(fields.createdOn),
+      with: allData
+        ? { services: { with: { cost: true } } }
+        : { services: true },
     });
 
     return userApps;

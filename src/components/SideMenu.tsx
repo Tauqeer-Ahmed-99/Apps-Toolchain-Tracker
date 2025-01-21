@@ -13,6 +13,7 @@ import OptionsMenu from "./OptionsMenu";
 import { useUser } from "@clerk/nextjs";
 import { getShortenedText } from "@/lib/utils";
 import Tooltip from "@mui/material/Tooltip";
+import { Application } from "@/lib/models";
 
 const drawerWidth = 240;
 
@@ -27,7 +28,7 @@ const Drawer = styled(MuiDrawer)({
   },
 });
 
-export default function SideMenu() {
+export default function SideMenu({ userApps }: { userApps: Application[] }) {
   const { user } = useUser();
 
   return (
@@ -47,7 +48,7 @@ export default function SideMenu() {
           p: 1.5,
         }}
       >
-        <SelectContent />
+        <SelectContent userApps={userApps} />
       </Box>
       <Divider />
       <Box

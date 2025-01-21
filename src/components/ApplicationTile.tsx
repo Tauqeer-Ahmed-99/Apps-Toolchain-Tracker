@@ -10,7 +10,6 @@ import { Routes } from "@/routes";
 import { AppAvatarIcon } from "./AppAvatarIcon";
 
 const ApplicationTile = ({ app }: { app: Application }) => {
-  console.log(app.services);
   return (
     <Link
       href={`${Routes.ApplicationDetails.replace(":appId", app.appId)}?name=${

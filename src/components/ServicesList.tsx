@@ -29,7 +29,7 @@ const ServicesList = async ({ appId }: { appId: string }) => {
     </Box>
   ) : (
     <Box display="flex" justifyContent="center">
-      <Typography variant="h6">No Service Added.</Typography>
+      <Typography variant="subtitle2">No Service Added.</Typography>
     </Box>
   );
 };

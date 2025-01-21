@@ -1,18 +1,20 @@
 "use client";
 
-import * as React from "react";
+import { Application } from "@/lib/models";
+import { Routes } from "@/routes";
+import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 import MuiAvatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
 import MuiListItemAvatar from "@mui/material/ListItemAvatar";
-import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
+import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent, selectClasses } from "@mui/material/Select";
-import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
-import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
-import SmartphoneRoundedIcon from "@mui/icons-material/SmartphoneRounded";
-import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 import AddApp from "./AddApp";
+import { AppIcon } from "./AppAvatarIcon";
 
 const Avatar = styled(MuiAvatar)(({ theme }) => ({
   width: 28,
@@ -27,21 +29,26 @@ const ListItemAvatar = styled(MuiListItemAvatar)({
   marginRight: 12,
 });
 
-export default function SelectContent() {
-  const [company, setCompany] = React.useState("");
+export default function SelectContent({
+  userApps,
+}: {
+  userApps: Application[];
+}) {
+  const [app, setApp] = React.useState("");
+  const router = useRouter();
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCompany(event.target.value as string);
+    setApp(event.target.value as string);
   };
 
   return (
     <Select
-      labelId="company-select"
-      id="company-simple-select"
-      value={company}
+      labelId="app-select"
+      id="app-simple-select"
+      value={(app ? app : userApps?.[0]?.appId) ?? "DefaultItem"}
       onChange={handleChange}
       displayEmpty
-      inputProps={{ "aria-label": "Select company" }}
+      inputProps={{ "aria-label": "Select App" }}
       fullWidth
       sx={{
         maxHeight: 56,
@@ -58,38 +65,36 @@ export default function SelectContent() {
       }}
     >
       <ListSubheader sx={{ pt: 0 }}>Production</ListSubheader>
-      <MenuItem value="">
+      {userApps.map((app) => (
+        <MenuItem
+          key={app.appId}
+          value={app.appId}
+          onClick={() =>
+            router.push(
+              `${Routes.ApplicationDetails.replace(":appId", app.appId)}?name=${
+                app.appName
+              }`
+            )
+          }
+        >
+          <ListItemAvatar>
+            <Avatar>
+              <AppIcon appType={app.appType} />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={app.appName}
+            secondary={`${app.appType} App`}
+          />
+        </MenuItem>
+      ))}
+      <MenuItem value={"DefaultItem"}>
         <ListItemAvatar>
-          <Avatar alt="Sitemark web">
+          <Avatar alt="Add new App">
             <DevicesRoundedIcon sx={{ fontSize: "1rem" }} />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Sitemark-web" secondary="Web app" />
-      </MenuItem>
-      <MenuItem value={10}>
-        <ListItemAvatar>
-          <Avatar alt="Sitemark App">
-            <SmartphoneRoundedIcon sx={{ fontSize: "1rem" }} />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Sitemark-app" secondary="Mobile application" />
-      </MenuItem>
-      <MenuItem value={20}>
-        <ListItemAvatar>
-          <Avatar alt="Sitemark Store">
-            <DevicesRoundedIcon sx={{ fontSize: "1rem" }} />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Sitemark-Store" secondary="Web app" />
-      </MenuItem>
-      <ListSubheader>Development</ListSubheader>
-      <MenuItem value={30}>
-        <ListItemAvatar>
-          <Avatar alt="Sitemark Store">
-            <ConstructionRoundedIcon sx={{ fontSize: "1rem" }} />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Sitemark-Admin" secondary="Web app" />
+        <ListItemText primary="Add New App" secondary="Web, Mobile" />
       </MenuItem>
       <Divider sx={{ mx: -1 }} />
       <AddApp />

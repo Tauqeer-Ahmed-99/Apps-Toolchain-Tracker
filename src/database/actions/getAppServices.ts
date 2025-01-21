@@ -5,6 +5,7 @@ export const getAppServices = async (appId: string): Promise<Service[]> => {
   try {
     const appServices = await database.query.Services.findMany({
       where: (fields, { eq }) => eq(fields.appId, appId),
+      orderBy: (fields, { asc }) => asc(fields.createdOn),
       with: { cost: true },
     });
 

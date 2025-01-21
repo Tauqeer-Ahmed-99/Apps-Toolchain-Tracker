@@ -27,7 +27,7 @@ const ApplicationList = async () => {
     </Box>
   ) : (
     <Box display="flex" justifyContent="center">
-      <Typography variant="h6">No Application Available.</Typography>
+      <Typography variant="subtitle2">No Application Available.</Typography>
     </Box>
   );
 };

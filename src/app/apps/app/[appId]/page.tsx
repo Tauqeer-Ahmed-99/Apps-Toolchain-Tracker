@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { getUserApp } from "@/database/actions/getApps";
 import { auth } from "@clerk/nextjs/server";
 import Box from "@mui/material/Box";
@@ -9,6 +9,7 @@ import AddService from "@/components/AddService";
 import ServicesList from "@/components/ServicesList";
 import EditApp from "@/components/AddApp";
 import { AppAvatarIcon } from "@/components/AppAvatarIcon";
+import ServicesLoading from "@/components/ApplicationLoading";
 
 const ApplicationDetailsScreen = async ({
   params,
@@ -49,7 +50,9 @@ const ApplicationDetailsScreen = async ({
         <Typography sx={{ fontSize: "1.5rem" }}>Services</Typography>
         <AddService />
       </Box>
-      <ServicesList appId={appId} />
+      <Suspense fallback={<ServicesLoading />}>
+        <ServicesList appId={appId} />
+      </Suspense>
     </Stack>
   );
 };

@@ -5,12 +5,14 @@ import SmartphoneRoundedIcon from "@mui/icons-material/SmartphoneRounded";
 import DesktopWindowsRoundedIcon from "@mui/icons-material/DesktopWindowsRounded";
 import DevicesOtherRoundedIcon from "@mui/icons-material/DevicesOtherRounded";
 
-const AppIcon = ({
+export const AppIcon = ({
   appType,
   size,
+  sx,
 }: {
   appType: "Web" | "Mobile" | "Desktop" | "Hybrid";
   size?: "lg" | "sm";
+  sx?: { fontSize: number | string };
 }) => {
   const Icon = {
     Web: DevicesRoundedIcon,
@@ -19,7 +21,7 @@ const AppIcon = ({
     Hybrid: DevicesOtherRoundedIcon,
   }[appType];
 
-  return <Icon sx={size === "lg" ? { fontSize: 32 } : undefined} />;
+  return <Icon sx={sx ?? size === "lg" ? { fontSize: 32 } : undefined} />;
 };
 
 export const AppAvatarIcon = ({

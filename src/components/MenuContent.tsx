@@ -33,7 +33,7 @@ export default function MenuContent() {
             </Link>
           ))}
       </List>
-      <List dense>
+      {/* <List dense>
         {routes
           .filter((route) => route.isNavItem && route.isSecondary)
           .map((route, index) => (
@@ -48,7 +48,7 @@ export default function MenuContent() {
               </ListItem>
             </Link>
           ))}
-      </List>
+      </List> */}
     </Stack>
   );
 }
