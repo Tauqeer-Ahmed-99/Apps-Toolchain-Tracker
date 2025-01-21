@@ -11,11 +11,11 @@ import { Routes } from "@/routes";
 const ApplicationList = async () => {
   const { userId } = await auth();
 
-  if (!userId) {
-    redirect(Routes.Auth);
-  }
+  // if (!userId) {
+  //   redirect(Routes.Auth);
+  // }
 
-  const apps = await getUserApps(userId);
+  const apps = await getUserApps(userId as string);
 
   return apps.length > 0 ? (
     <Box>

@@ -10,11 +10,11 @@ import DashbaordLoading from "@/components/DashbaordLoading";
 const DashboardScreen = async () => {
   const { userId } = await auth();
 
-  if (!userId) {
-    notFound();
-  }
+  // if (!userId) {
+  //   notFound();
+  // }
 
-  const userAppsPromise = getUserApps(userId, true);
+  const userAppsPromise = getUserApps(userId as string, true);
 
   return (
     <Stack

@@ -19,9 +19,9 @@ const ApplicationDetailsScreen = async ({
 }) => {
   const { userId } = await auth();
 
-  if (!userId) {
-    redirect(Routes.Auth);
-  }
+  // if (!userId) {
+  //   redirect(Routes.Auth);
+  // }
 
   const appId = (await params).appId;
 
@@ -29,7 +29,7 @@ const ApplicationDetailsScreen = async ({
     notFound();
   }
 
-  const app = await getUserApp(userId, appId);
+  const app = await getUserApp(userId as string, appId);
 
   if (!app) {
     notFound();

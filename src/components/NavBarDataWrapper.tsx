@@ -8,11 +8,11 @@ import { Routes } from "@/routes";
 const NavBarDataWrapper = async ({ children }: PropsWithChildren) => {
   const { userId } = await auth();
 
-  if (!userId) {
-    redirect(Routes.Auth);
-  }
+  // if (!userId) {
+  //   redirect(Routes.Auth);
+  // }
 
-  const userAppsPromise = getUserApps(userId);
+  const userAppsPromise = getUserApps(userId as string);
 
   return (
     <NavbarProvider userAppsPromise={userAppsPromise}>

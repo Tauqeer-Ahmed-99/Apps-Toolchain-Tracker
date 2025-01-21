@@ -9,11 +9,11 @@ import Results from "./Results";
 import { Routes } from "@/routes";
 
 const ServicesList = async ({ appId }: { appId: string }) => {
-  const { userId } = await auth();
+  // const { userId } = await auth();
 
-  if (!userId) {
-    redirect(Routes.Auth);
-  }
+  // if (!userId) {
+  //   redirect(Routes.Auth);
+  // }
 
   if (!appId) {
     return notFound();
