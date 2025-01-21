@@ -3,7 +3,6 @@
 import ColorModeIconDropdown from "@/components/ColorModeIconDropdown";
 import { SignIn } from "@clerk/nextjs";
 import Box from "@mui/material/Box";
-import MuiCard from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 
@@ -30,7 +29,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignInScreen(props: { disableCustomTheme?: boolean }) {
+export default function SignInScreen() {
   return (
     <SignInContainer direction="column" justifyContent="space-between">
       <Box display="flex" justifyContent="end">
