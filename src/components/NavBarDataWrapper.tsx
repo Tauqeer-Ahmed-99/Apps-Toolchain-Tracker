@@ -1,14 +1,15 @@
 import React, { PropsWithChildren } from "react";
 import { auth } from "@clerk/nextjs/server";
-import { unauthorized } from "next/navigation";
+import { redirect } from "next/navigation";
 import { getUserApps } from "@/database/actions/getApps";
 import NavbarProvider from "@/providers/NavbarProvider";
+import { Routes } from "@/routes";
 
 const NavBarDataWrapper = async ({ children }: PropsWithChildren) => {
   const { userId } = await auth();
 
   if (!userId) {
-    unauthorized();
+    redirect(Routes.Auth);
   }
 
   const userAppsPromise = getUserApps(userId);

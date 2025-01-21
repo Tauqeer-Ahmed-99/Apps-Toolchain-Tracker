@@ -4,12 +4,13 @@ import { auth } from "@clerk/nextjs/server";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { notFound, unauthorized } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import AddService from "@/components/AddService";
 import ServicesList from "@/components/ServicesList";
 import EditApp from "@/components/AddApp";
 import { AppAvatarIcon } from "@/components/AppAvatarIcon";
 import ServicesLoading from "@/components/ApplicationLoading";
+import { Routes } from "@/routes";
 
 const ApplicationDetailsScreen = async ({
   params,
@@ -19,7 +20,7 @@ const ApplicationDetailsScreen = async ({
   const { userId } = await auth();
 
   if (!userId) {
-    unauthorized();
+    redirect(Routes.Auth);
   }
 
   const appId = (await params).appId;
