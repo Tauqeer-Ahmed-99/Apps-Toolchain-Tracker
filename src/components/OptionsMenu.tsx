@@ -11,8 +11,8 @@ import ListItemIcon, { listItemIconClasses } from "@mui/material/ListItemIcon";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import MenuButton from "./MenuButton";
-import { SignOutButton } from "@clerk/nextjs";
 import { Routes } from "@/routes";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 
 const MenuItem = styled(MuiMenuItem)({
   margin: "2px 0",
@@ -62,7 +62,7 @@ export default function OptionsMenu() {
         <MenuItem onClick={handleClose}>Add another account</MenuItem>
         <MenuItem onClick={handleClose}>Settings</MenuItem>
         <Divider /> */}
-        <SignOutButton signOutOptions={{ redirectUrl: Routes.Auth }}>
+        <LogoutLink postLogoutRedirectURL={Routes.Auth}>
           <MenuItem
             onClick={handleClose}
             sx={{
@@ -77,7 +77,7 @@ export default function OptionsMenu() {
               <LogoutRoundedIcon fontSize="small" />
             </ListItemIcon>
           </MenuItem>
-        </SignOutButton>
+        </LogoutLink>
       </Menu>
     </React.Fragment>
   );

@@ -34,57 +34,71 @@
 //     "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
 //   ],
 // };
-import {
-  NextFetchEvent,
-  NextMiddleware,
-  NextRequest,
-  NextResponse,
-} from "next/server";
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import routes from "./routes";
-import { HEADERS_PATH_KEY } from "./lib/utils";
+// import {
+//   NextFetchEvent,
+//   NextMiddleware,
+//   NextRequest,
+//   NextResponse,
+// } from "next/server";
+// import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+// import routes from "./routes";
+// import {withAuth , authMiddleware} from "@kinde-oss/kinde-auth-nextjs/middleware";
 
-export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware;
+// import { HEADERS_PATH_KEY } from "./lib/utils";
 
-const protectedRoutes = routes
-  .filter((route) => route.isProtected)
-  .map((route) => `${route.path}(.*)`);
+// export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware;
 
-const isProtectedRoute = createRouteMatcher(protectedRoutes);
+// const protectedRoutes = routes
+//   .filter((route) => route.isProtected)
+//   .map((route) => `${route.path}(.*)`);
 
-const withUser: MiddlewareFactory = (next) => {
-  return clerkMiddleware(async (auth, req, _next) => {
-    if (isProtectedRoute(req)) {
-      await auth.protect();
-    }
-    return next(req, _next);
-  });
-};
+// const isProtectedRoute = createRouteMatcher(protectedRoutes);
 
-export function stackMiddlewares(
-  functions: MiddlewareFactory[] = [],
-  index = 0
-): NextMiddleware {
-  const current = functions[index];
-  if (current) {
-    const next = stackMiddlewares(functions, index + 1);
-    return current(next);
-  }
-  return () => NextResponse.next();
+// const withUser: MiddlewareFactory = (next) => {
+//   return clerkMiddleware(async (auth, req, _next) => {
+//     if (isProtectedRoute(req)) {
+//       await auth.protect();
+//     }
+//     return next(req, _next);
+//   });
+// };
+
+// export function stackMiddlewares(
+//   functions: MiddlewareFactory[] = [],
+//   index = 0
+// ): NextMiddleware {
+//   const current = functions[index];
+//   if (current) {
+//     const next = stackMiddlewares(functions, index + 1);
+//     return current(next);
+//   }
+//   return () => NextResponse.next();
+// }
+
+// const withPathname: MiddlewareFactory = (next) => {
+//   return async (request: NextRequest, _next: NextFetchEvent) => {
+//     // Clone the request headers and set the pathname
+//     const headers = new Headers(request.headers);
+//     headers.set(HEADERS_PATH_KEY, new URL(request.url).pathname);
+
+//     // Pass the updated headers to the response
+//     const response = await next(request, _next);
+//     response?.headers.set(HEADERS_PATH_KEY, new URL(request.url).pathname);
+//     return response;
+//   };
+// };
+
+// const middlewares :MiddlewareFactory []= [withPathname,];
+// export default stackMiddlewares(middlewares);
+
+import { withAuth } from "@kinde-oss/kinde-auth-nextjs/middleware";
+import { NextRequest } from "next/server";
+
+export default function middleware(req: NextRequest) {
+  return withAuth(req);
 }
-
-const withPathname: MiddlewareFactory = (next) => {
-  return async (request: NextRequest, _next: NextFetchEvent) => {
-    // Clone the request headers and set the pathname
-    const headers = new Headers(request.headers);
-    headers.set(HEADERS_PATH_KEY, new URL(request.url).pathname);
-
-    // Pass the updated headers to the response
-    const response = await next(request, _next);
-    response?.headers.set(HEADERS_PATH_KEY, new URL(request.url).pathname);
-    return response;
-  };
+export const config = {
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
 };
-
-const middlewares = [withPathname, withUser];
-export default stackMiddlewares(middlewares);

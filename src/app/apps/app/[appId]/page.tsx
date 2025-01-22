@@ -1,23 +1,23 @@
-import React, { Suspense } from "react";
+import EditApp from "@/components/AddApp";
+import AddService from "@/components/AddService";
+import { AppAvatarIcon } from "@/components/AppAvatarIcon";
+import ServicesLoading from "@/components/ApplicationLoading";
+import ServicesList from "@/components/ServicesList";
 import { getUserApp } from "@/database/actions/getApps";
-import { auth } from "@clerk/nextjs/server";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { notFound, redirect } from "next/navigation";
-import AddService from "@/components/AddService";
-import ServicesList from "@/components/ServicesList";
-import EditApp from "@/components/AddApp";
-import { AppAvatarIcon } from "@/components/AppAvatarIcon";
-import ServicesLoading from "@/components/ApplicationLoading";
-import { Routes } from "@/routes";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 const ApplicationDetailsScreen = async ({
   params,
 }: {
   params: Promise<{ appId: string }>;
 }) => {
-  const { userId } = await auth();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
 
   // if (!userId) {
   //   redirect(Routes.Auth);
@@ -29,7 +29,7 @@ const ApplicationDetailsScreen = async ({
     notFound();
   }
 
-  const app = await getUserApp(userId as string, appId);
+  const app = await getUserApp(user?.id as string, appId);
 
   if (!app) {
     notFound();

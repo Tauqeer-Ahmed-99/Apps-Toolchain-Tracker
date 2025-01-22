@@ -22,7 +22,7 @@ import MiscellaneousServicesRoundedIcon from "@mui/icons-material/MiscellaneousS
 import { ServerActionState, ServerActionStatus, Service } from "@/lib/models";
 import { AddServiceFormState } from "@/lib/formModels";
 import { createUpdateService } from "@/server/actions";
-import { useUser } from "@clerk/nextjs";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useParams } from "next/navigation";
 import Options from "./Options";
 import DeleteServiceButton from "./DeleteServiceButton";
@@ -39,7 +39,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const AddService = ({ service }: { service?: Service }) => {
-  const { user } = useUser();
+  const { user } = useKindeBrowserClient();
   const { appId } = useParams();
   const [open, setOpen] = useState(false);
 

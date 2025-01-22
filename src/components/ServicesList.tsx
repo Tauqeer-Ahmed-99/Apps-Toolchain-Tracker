@@ -1,16 +1,11 @@
-import * as React from "react";
-import { auth } from "@clerk/nextjs/server";
-import { notFound, redirect } from "next/navigation";
+import getAppServices from "@/database/actions/getAppServices";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import getAppServices from "@/database/actions/getAppServices";
-import ServiceTile from "./ServiceTile";
+import { notFound } from "next/navigation";
 import Results from "./Results";
-import { Routes } from "@/routes";
+import ServiceTile from "./ServiceTile";
 
 const ServicesList = async ({ appId }: { appId: string }) => {
-  // const { userId } = await auth();
-
   // if (!userId) {
   //   redirect(Routes.Auth);
   // }
