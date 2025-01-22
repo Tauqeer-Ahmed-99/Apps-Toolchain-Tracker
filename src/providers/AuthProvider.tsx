@@ -1,8 +1,13 @@
-import React, { PropsWithChildren } from "react";
-import { ClerkProvider } from "@clerk/nextjs";
+"use client";
 
-const AuthProvider = async ({ children }: PropsWithChildren) => {
-  return <ClerkProvider>{children}</ClerkProvider>;
+import React, { PropsWithChildren, useEffect } from "react";
+import { KindeProvider } from "@kinde-oss/kinde-auth-nextjs";
+import routes from "@/routes";
+import { usePathname } from "next/navigation";
+import { match } from "path-to-regexp";
+
+const AuthProvider = ({ children }: PropsWithChildren) => {
+  return <KindeProvider>{children}</KindeProvider>;
 };
 
 export default AuthProvider;

@@ -1,21 +1,19 @@
-import * as React from "react";
-import { auth } from "@clerk/nextjs/server";
 import { getUserApps } from "@/database/actions/getApps";
-import { redirect } from "next/navigation";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import ApplicationTile from "./ApplicationTile";
 import Results from "./Results";
-import { Routes } from "@/routes";
 
 const ApplicationList = async () => {
-  const { userId } = await auth();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
 
   // if (!userId) {
   //   redirect(Routes.Auth);
   // }
 
-  const apps = await getUserApps(userId as string);
+  const apps = await getUserApps(user?.id as string);
 
   return apps.length > 0 ? (
     <Box>

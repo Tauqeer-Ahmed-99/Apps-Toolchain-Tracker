@@ -27,7 +27,7 @@ import {
   ServerActionStatus,
 } from "@/lib/models";
 import { AddAppFormState } from "@/lib/formModels";
-import { useUser } from "@clerk/nextjs";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import Options from "./Options";
 import DeleteAppButton from "./DeleteAppButton";
 
@@ -41,7 +41,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const AddApp = ({ app }: { app?: Application }) => {
-  const { user } = useUser();
+  const { user } = useKindeBrowserClient();
   const [open, setOpen] = React.useState(false);
 
   const initialState: ServerActionState<AddAppFormState> = {

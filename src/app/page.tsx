@@ -1,11 +1,12 @@
-import { Routes } from "@/routes";
-import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { Routes } from "@/routes";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function Home() {
-  const user = await currentUser();
+  const { isAuthenticated } = getKindeServerSession();
+  const isAuth = await isAuthenticated();
 
-  if (!user) {
+  if (!isAuth) {
     redirect(Routes.Auth);
   }
 

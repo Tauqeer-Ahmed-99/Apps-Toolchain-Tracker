@@ -1,20 +1,20 @@
-import React, { Suspense } from "react";
-import { getUserApps } from "@/database/actions/getApps";
-import { auth } from "@clerk/nextjs/server";
-import { notFound } from "next/navigation";
-import Stack from "@mui/material/Stack";
+import DashbaordLoading from "@/components/DashbaordLoading";
 import Header from "@/components/Header";
 import MainGrid from "@/components/MainGrid";
-import DashbaordLoading from "@/components/DashbaordLoading";
+import { getUserApps } from "@/database/actions/getApps";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import Stack from "@mui/material/Stack";
+import { Suspense } from "react";
 
 const DashboardScreen = async () => {
-  const { userId } = await auth();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
 
   // if (!userId) {
   //   notFound();
   // }
 
-  const userAppsPromise = getUserApps(userId as string, true);
+  const userAppsPromise = getUserApps(user?.id as string, true);
 
   return (
     <Stack

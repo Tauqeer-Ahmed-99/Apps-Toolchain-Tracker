@@ -10,7 +10,10 @@ import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
 import CardAlert from "./CardAlert";
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import {
+  LogoutLink,
+  useKindeBrowserClient,
+} from "@kinde-oss/kinde-auth-nextjs";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { getShortenedText } from "@/lib/utils";
@@ -25,7 +28,7 @@ export default function SideMenuMobile({
   open,
   toggleDrawer,
 }: SideMenuMobileProps) {
-  const { user } = useUser();
+  const { user } = useKindeBrowserClient();
 
   return (
     <Drawer
@@ -53,12 +56,12 @@ export default function SideMenuMobile({
           >
             <Avatar
               sizes="large"
-              alt={user?.username ?? "Avatar"}
-              src={user?.imageUrl}
+              alt={user?.given_name ?? "Avatar"}
+              src={user?.picture ?? undefined}
               sx={{ width: 36, height: 36 }}
             />
             <Box>
-              <Tooltip title={user?.fullName ?? user?.username ?? ""}>
+              <Tooltip title={user?.given_name ?? user?.family_name ?? ""}>
                 <Typography
                   variant="body2"
                   noWrap
@@ -68,26 +71,18 @@ export default function SideMenuMobile({
                     cursor: "pointer",
                   }}
                 >
-                  {getShortenedText(user?.fullName ?? user?.username ?? "", 20)}
+                  {getShortenedText(
+                    user?.given_name ?? user?.family_name ?? "",
+                    20
+                  )}
                 </Typography>
               </Tooltip>
-              <Tooltip
-                title={
-                  user?.emailAddresses?.[0].emailAddress ??
-                  user?.primaryPhoneNumber?.phoneNumber ??
-                  ""
-                }
-              >
+              <Tooltip title={user?.email ?? ""}>
                 <Typography
                   variant="caption"
                   sx={{ color: "text.secondary", cursor: "pointer" }}
                 >
-                  {getShortenedText(
-                    user?.emailAddresses?.[0].emailAddress ??
-                      user?.primaryPhoneNumber?.phoneNumber ??
-                      "",
-                    30
-                  )}
+                  {getShortenedText(user?.email ?? "", 30)}
                 </Typography>
               </Tooltip>
             </Box>
@@ -102,7 +97,7 @@ export default function SideMenuMobile({
           <Divider />
         </Stack>
         <Stack sx={{ p: 2 }}>
-          <SignOutButton signOutOptions={{ redirectUrl: Routes.Auth }}>
+          <LogoutLink postLogoutRedirectURL={Routes.Auth}>
             <Button
               variant="outlined"
               fullWidth
@@ -110,7 +105,7 @@ export default function SideMenuMobile({
             >
               Logout
             </Button>
-          </SignOutButton>
+          </LogoutLink>
         </Stack>
       </Stack>
     </Drawer>

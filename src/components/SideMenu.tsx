@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import SelectContent from "./SelectContent";
 import MenuContent from "./MenuContent";
 import OptionsMenu from "./OptionsMenu";
-import { useUser } from "@clerk/nextjs";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { getShortenedText } from "@/lib/utils";
 import Tooltip from "@mui/material/Tooltip";
 import { Application } from "@/lib/models";
@@ -29,7 +29,7 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export default function SideMenu({ userApps }: { userApps: Application[] }) {
-  const { user } = useUser();
+  const { user } = useKindeBrowserClient();
 
   return (
     <Drawer
@@ -73,12 +73,12 @@ export default function SideMenu({ userApps }: { userApps: Application[] }) {
       >
         <Avatar
           sizes="small"
-          alt={user?.username ?? "Avatar"}
-          src={user?.imageUrl}
+          alt={user?.given_name ?? "Avatar"}
+          src={user?.picture ?? undefined}
           sx={{ width: 36, height: 36 }}
         />
         <Box sx={{ mr: "auto" }}>
-          <Tooltip title={user?.fullName ?? user?.username ?? ""}>
+          <Tooltip title={user?.given_name ?? user?.family_name ?? ""}>
             <Typography
               variant="body2"
               noWrap
@@ -88,26 +88,18 @@ export default function SideMenu({ userApps }: { userApps: Application[] }) {
                 cursor: "pointer",
               }}
             >
-              {getShortenedText(user?.fullName ?? user?.username ?? "", 16)}
+              {getShortenedText(
+                user?.given_name ?? user?.family_name ?? "",
+                16
+              )}
             </Typography>
           </Tooltip>
-          <Tooltip
-            title={
-              user?.emailAddresses?.[0].emailAddress ??
-              user?.primaryPhoneNumber?.phoneNumber ??
-              ""
-            }
-          >
+          <Tooltip title={user?.email ?? ""}>
             <Typography
               variant="caption"
               sx={{ color: "text.secondary", cursor: "pointer" }}
             >
-              {getShortenedText(
-                user?.emailAddresses?.[0].emailAddress ??
-                  user?.primaryPhoneNumber?.phoneNumber ??
-                  "",
-                20
-              )}
+              {getShortenedText(user?.email ?? "", 20)}
             </Typography>
           </Tooltip>
         </Box>
