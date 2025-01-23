@@ -1,3 +1,14 @@
+export enum APIStatus {
+  Success = "success",
+  Error = "error",
+}
+
+export interface APIResponse<T = undefined> {
+  status: APIStatus;
+  message: string;
+  data: T;
+}
+
 export enum ServerActionStatus {
   NotInitialized = "not-initialized",
   Success = "success",

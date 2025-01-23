@@ -15,6 +15,10 @@ export enum Routes {
   Feedback = "/feedback",
 }
 
+export enum APIRoutes {
+  SearchApps = "/api/apps/:searchTerm",
+}
+
 export interface Route {
   label: string;
   path: Routes;

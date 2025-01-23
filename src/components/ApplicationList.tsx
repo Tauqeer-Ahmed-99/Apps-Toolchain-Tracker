@@ -1,32 +1,58 @@
-import { getUserApps } from "@/database/actions/getApps";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+"use client";
+
+import useDebouncedApiQuery from "@/hooks/useDebouncedApiQuery";
+import { APIResponse, Application } from "@/lib/models";
+import { APIRoutes } from "@/routes";
+import { TextField } from "@mui/material";
+import { useState } from "react";
+import ApplicationTile from "./ApplicationTile";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import ApplicationTile from "./ApplicationTile";
 import Results from "./Results";
+import ApplicationLoading from "./ApplicationLoading";
 
-const ApplicationList = async () => {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
+const ApplicationList = () => {
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // if (!userId) {
-  //   redirect(Routes.Auth);
-  // }
+  const { data, isLoading } = useDebouncedApiQuery<APIResponse<Application[]>>(
+    APIRoutes.SearchApps.replace(
+      ":searchTerm",
+      searchTerm ? searchTerm : "all"
+    ),
+    {
+      debounceSearchTerm: searchTerm,
+      debounceTime: 300,
+    }
+  );
 
-  const apps = await getUserApps(user?.id as string);
-
-  return apps.length > 0 ? (
+  return (
     <Box>
-      <Results results={apps.length} />
-      <Box>
-        {apps.map((app) => (
-          <ApplicationTile key={app.appId} app={app} />
-        ))}
-      </Box>
-    </Box>
-  ) : (
-    <Box display="flex" justifyContent="center">
-      <Typography variant="subtitle2">No Application Available.</Typography>
+      <TextField
+        name="searchTerm"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        fullWidth
+        placeholder="Search Applications..."
+      />
+      <Results results={data?.data.length ?? 0} />
+
+      {isLoading && <ApplicationLoading />}
+
+      {!isLoading && (
+        <Box>
+          {data?.data?.length ?? 0 > 0 ? (
+            data?.data.map((app) => (
+              <ApplicationTile key={app.appId} app={app} />
+            ))
+          ) : (
+            <Box display="flex" justifyContent="center">
+              <Typography variant="subtitle2">
+                No Application Available.
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };

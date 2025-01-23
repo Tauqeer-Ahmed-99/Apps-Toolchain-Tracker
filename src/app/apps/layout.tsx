@@ -1,8 +1,7 @@
-import React from "react";
-import Stack from "@mui/material/Stack";
 import Header from "@/components/Header";
-import AppsHeader from "@/components/AppsHeader";
 import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import React from "react";
 
 const AppsLayout = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -10,10 +10,6 @@ const DashboardScreen = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  // if (!userId) {
-  //   notFound();
-  // }
-
   const userAppsPromise = getUserApps(user?.id as string, true);
 
   return (

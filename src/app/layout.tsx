@@ -5,6 +5,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import NavBarDataWrapper from "@/components/NavBarDataWrapper";
 import { Metadata } from "next";
+import QueryClientProvider from "@/providers/QueryClientProvider";
 
 export const metadata: Metadata = {
   title: "Apps Service Tracker",
@@ -20,7 +21,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           <InitColorSchemeScript attribute="class" />
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider>
-              <NavBarDataWrapper>{props.children}</NavBarDataWrapper>
+              <QueryClientProvider>
+                <NavBarDataWrapper>{props.children}</NavBarDataWrapper>
+              </QueryClientProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </body>

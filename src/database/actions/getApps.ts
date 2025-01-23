@@ -40,3 +40,16 @@ export const getUserApp = async (
     return undefined;
   }
 };
+
+export const searchUserApps = async (
+  userId: string,
+  searchTerm: string,
+  allData?: boolean
+): Promise<Application[]> => {
+  return await database.query.Applications.findMany({
+    where: (fields, { and, eq, ilike }) =>
+      and(eq(fields.userId, userId), ilike(fields.appName, `%${searchTerm}%`)),
+    orderBy: (fields, { asc }) => asc(fields.createdOn),
+    with: allData ? { services: { with: { cost: true } } } : { services: true },
+  });
+};

@@ -1,15 +1,13 @@
-import React, { Suspense } from "react";
+"use client";
+
 import ApplicationList from "@/components/ApplicationList";
 import AppsHeader from "@/components/AppsHeader";
-import ApplicationLoading from "@/components/ApplicationLoading";
 
-const ApplicationsScreen = async () => {
+const ApplicationsScreen = () => {
   return (
     <>
       <AppsHeader />
-      <Suspense fallback={<ApplicationLoading />}>
-        <ApplicationList />
-      </Suspense>
+      <ApplicationList />
     </>
   );
 };
