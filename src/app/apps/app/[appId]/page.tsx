@@ -19,10 +19,6 @@ const ApplicationDetailsScreen = async ({
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  // if (!userId) {
-  //   redirect(Routes.Auth);
-  // }
-
   const appId = (await params).appId;
 
   if (!appId) {
@@ -37,12 +33,30 @@ const ApplicationDetailsScreen = async ({
 
   return (
     <Stack direction="column" gap={4}>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        sx={{
+          flexDirection: { xs: "column", sm: "row" },
+          gap: { xs: 2 },
+          alignItems: { sm: "center" },
+          justifyContent: { sm: "space-between" },
+        }}
+      >
         <Box display="flex" alignItems="center" gap={2}>
           <AppAvatarIcon size="lg" appType={app.appType} />
           <Box>
-            <Typography variant="h3">{app.appName}</Typography>
-            <Typography variant="subtitle1">{app.appType} App</Typography>
+            <Typography
+              variant="h3"
+              sx={{ fontSize: { xs: "1rem", sm: "1.5rem", md: "2rem" } }}
+            >
+              {app.appName}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontSize: { xs: "0.75rem", sm: "1rem" } }}
+            >
+              {app.appType} App
+            </Typography>
           </Box>
         </Box>
         <EditApp app={app} />
