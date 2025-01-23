@@ -3,7 +3,8 @@ import { Application } from "@/lib/models";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
-import { Tooltip, Typography } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 
 import Link from "./Link";
 import { Routes } from "@/routes";
