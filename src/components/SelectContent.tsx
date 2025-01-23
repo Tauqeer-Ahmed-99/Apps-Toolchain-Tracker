@@ -70,7 +70,7 @@ export default function SelectContent({
           key={app.appId}
           value={app.appId}
           onClick={() =>
-            router.push(
+            router.prefetch(
               `${Routes.ApplicationDetails.replace(":appId", app.appId)}?name=${
                 app.appName
               }`
