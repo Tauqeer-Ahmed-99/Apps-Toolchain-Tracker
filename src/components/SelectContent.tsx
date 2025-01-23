@@ -1,20 +1,21 @@
 "use client";
 
+import * as React from "react";
 import { Application } from "@/lib/models";
-import { Routes } from "@/routes";
-import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
-import MuiAvatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
+import ListSubheader from "@mui/material/ListSubheader";
+import Select, { SelectChangeEvent, selectClasses } from "@mui/material/Select";
+import AddApp from "./AddApp";
+import { useEffect } from "react";
+import { AppIcon } from "./AppAvatarIcon";
+import { Routes } from "@/routes";
+import MenuItem from "@mui/material/MenuItem";
 import MuiListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
-import ListSubheader from "@mui/material/ListSubheader";
-import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent, selectClasses } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
+import MuiAvatar from "@mui/material/Avatar";
 import { useRouter } from "next/navigation";
-import * as React from "react";
-import AddApp from "./AddApp";
-import { AppIcon } from "./AppAvatarIcon";
+import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
 
 const Avatar = styled(MuiAvatar)(({ theme }) => ({
   width: 28,
@@ -29,13 +30,57 @@ const ListItemAvatar = styled(MuiListItemAvatar)({
   marginRight: 12,
 });
 
+const AppBarMenuItem = ({ app }: { app: Application }) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch(
+      `${Routes.ApplicationDetails.replace(":appId", app.appId)}?name=${
+        app.appName
+      }`
+    );
+  }, [router]);
+
+  return (
+    <MenuItem
+      value={app.appId}
+      onClick={() =>
+        router.push(
+          `${Routes.ApplicationDetails.replace(":appId", app.appId)}?name=${
+            app.appName
+          }`
+        )
+      }
+    >
+      <ListItemAvatar>
+        <Avatar>
+          <AppIcon appType={app.appType} />
+        </Avatar>
+      </ListItemAvatar>
+      <ListItemText primary={app.appName} secondary={`${app.appType} App`} />
+    </MenuItem>
+  );
+};
+
+const AppBarDefaultMenuItem = () => {
+  return (
+    <MenuItem value={"DefaultItem"}>
+      <ListItemAvatar>
+        <Avatar alt="Add new App">
+          <DevicesRoundedIcon sx={{ fontSize: "1rem" }} />
+        </Avatar>
+      </ListItemAvatar>
+      <ListItemText primary="Add New App" secondary="Web, Mobile" />
+    </MenuItem>
+  );
+};
+
 export default function SelectContent({
   userApps,
 }: {
   userApps: Application[];
 }) {
   const [app, setApp] = React.useState("");
-  const router = useRouter();
 
   const handleChange = (event: SelectChangeEvent) => {
     setApp(event.target.value as string);
@@ -45,7 +90,7 @@ export default function SelectContent({
     <Select
       labelId="app-select"
       id="app-simple-select"
-      value={(app ? app : userApps?.[0]?.appId) ?? "DefaultItem"}
+      value={"DefaultItem"}
       onChange={handleChange}
       displayEmpty
       inputProps={{ "aria-label": "Select App" }}
@@ -66,27 +111,7 @@ export default function SelectContent({
     >
       <ListSubheader sx={{ pt: 0 }}>Production</ListSubheader>
       {userApps.map((app) => (
-        <MenuItem
-          key={app.appId}
-          value={app.appId}
-          onClick={() =>
-            router.prefetch(
-              `${Routes.ApplicationDetails.replace(":appId", app.appId)}?name=${
-                app.appName
-              }`
-            )
-          }
-        >
-          <ListItemAvatar>
-            <Avatar>
-              <AppIcon appType={app.appType} />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary={app.appName}
-            secondary={`${app.appType} App`}
-          />
-        </MenuItem>
+        <AppBarMenuItem key={app.appId} app={app} />
       ))}
       <MenuItem value={"DefaultItem"}>
         <ListItemAvatar>
